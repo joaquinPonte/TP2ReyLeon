@@ -40,6 +40,8 @@ persigue(shenzi, simba).
 persigue(shenzi, scar).
 persigue(banzai, timon).
 
+% Punto4)
+persigue(scar, mufasa).
 
 
 % 1)a) Qué cucaracha es jugosita: ó sea, hay otra con su mismo tamaño 
@@ -217,4 +219,32 @@ pesoComida3(cucaracha(_,_,Peso),Peso).
 
 %combinaComidas(Personaje, ListaComidas)
 
+combinacionComidas(Personaje,CombinacionesPosibles) :-
+    personajes3(Personaje),
+    findall(Comida,comida3(_,Comida),ListaComida),
+    list_to_set(ListaComida,ComidaDisponible),
+    comidasPosibles(Personaje,ComidaDisponible, CombinacionesPosibles).
 
+comidasPosibles(_,[],[]).
+comidasPosibles(Personaje,[Comida|Resto],[Comida|Posibles]) :-
+    comioComida(Personaje,Comida),
+    comidasPosibles(Personaje,Resto,Posibles).
+comidasPosibles(Personaje,[_|Resto],Posibles) :-
+    comidasPosibles(Personaje,Resto,Posibles).
+
+comioComida(Personaje,vaquitaSanAntonio(Nombre,Peso)) :-
+    comio(Personaje,vaquitaSanAntonio(Nombre,Peso)).
+comioComida(Personaje,cucaracha(Nombre,Tamanio,Peso)) :-
+    comio(Personaje,cucaracha(Nombre,Tamanio,Peso)).
+comioComida(Personaje,hormiga(Nombre)) :-
+    comio(Personaje,hormiga(Nombre)).
+comioComida(Personaje,Comida) :-
+    persigue(Personaje,Comida).
+
+% 4) Buscando el rey… Sabiendo que todo animal adora a todo lo que no se 
+%    lo come o no lo persigue, encontrar al rey. El rey es el animal a 
+%    quien sólo hay un animal que lo persigue y todos adoran.  
+
+%?-rey(R). 
+%R = mufasa. 
+%(sólo lo persigue scar y todos los adoran) 
